@@ -1,11 +1,19 @@
+import OOP.GetRequest;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class ReqresTest {
     @Test
     public void testGet(){
-        RestAssured.given().baseUri("https://reqres.in/api/users/2").when().get().then().assertThat().statusCode(201);
+      //  RestAssured.given().baseUri("https://reqres.in/api/users/2").when().get().then().assertThat().statusCode(201);
+        // re-use after applying OOP and deserialization
+        GetRequest getUser = new GetRequest("https://reqres.in/","api/users/2");
+        Response response1 = getUser.send();
+        response1.prettyPrint();
+        ResponseBody responseBody=response1.as(ResponseBody.class);
+        Assert.assertEquals(responseBody.data.last_name,"Weaver");
     }
     @Test
     public void testGetList(){
